@@ -336,6 +336,17 @@
 <h1 id="JVM-内存模型"><a href="#JVM-内存模型" class="headerlink" title="JVM 内存模型"></a>JVM 内存模型</h1><p><img src="http://p99wa8ztp.bkt.clouddn.com/jvm_mm.jpg" alt="image"></p>
 <h3 id="方法区"><a href="#方法区" class="headerlink" title="方法区"></a>方法区</h3><p>  方法区：也有人叫做 永久代、非堆。主要存储虚拟家加载的类信息、常量、静态常量、类中声明的各种方法信息以及即时编译(JIT)产生的代码数据，是各个线程共享的内存区域。可以通过 -XX:PermSize 和 -XX:MaxPermSize 来调整大小</p>
 <p>  运行时常量池：是方法区的一部分，用于存放编译器生成的各种符号引用，这部分将在类加载后存储到运行时常量池中。</p>
+<h5 id="HotSpot-方法区的变迁"><a href="#HotSpot-方法区的变迁" class="headerlink" title="HotSpot 方法区的变迁"></a>HotSpot 方法区的变迁</h5><ol>
+<li>JDK1.2 - JDK6</li>
+</ol>
+<p>在 JDK1.2 ~ JDK6 的实现中，HotSpot 使用永久代实现方法区；HotSpot 使用 GC 分代实现方法区带来了很大便利；</p>
+<ol start="2">
+<li>JDK7</li>
+</ol>
+<p>由于 GC 分代技术的影响，使之许多优秀的内存调试工具无法在 Oracle HotSpot之上运行，必须单独处理；并且 Oracle 同时收购了 BEA 和 Sun 公司，同时拥有 JRockit 和 HotSpot，在将 JRockit 许多优秀特性移植到 HotSpot 时由于 GC 分代技术遇到了种种困难，所以从 JDK7 开始 Oracle HotSpot 开始移除永久代。</p>
+<p>JDK7中符号表被移动到 Native Heap中，字符串常量和类引用被移动到 Java Heap中。</p>
+<p>3.JDK8</p>
+<p>在 JDK8 中，永久代已完全被元空间(Meatspace)所取代</p>
 <h3 id="虚拟机栈"><a href="#虚拟机栈" class="headerlink" title="虚拟机栈"></a>虚拟机栈</h3><ul>
 <li><p>java 虚拟机栈是线程私有的。虚拟机栈描述的是 java 方法执行的内存模型，每个方法在被执行的时候，都会创建一个栈帧，用于存储局部变量表、操作栈、动态链接、方法出口等信息。方法被调用到执行完成，对应着一个栈帧在虚拟机栈的入栈到出栈过程。</p>
 </li>
